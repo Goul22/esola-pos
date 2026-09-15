@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Les tables avec @id et @default(uuid()) pour éviter les conflits en mode hors-ligne
+model Shop {
+  id        String    @id @default(uuid())
+  name      String
+  products  Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  buyPrice    Float
+  sellPrice   Float
+  quantity    Int
+  shopId      String
+  shop        Shop     @relation(fields: [shopId], references: [id])
+  updatedAt   DateTime @updatedAt
+}
