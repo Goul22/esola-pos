@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 jobs:
-    
   build-android:
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +24,6 @@ jobs:
           java-version: '17'
 
       - name: 📥 Installation des dépendances
-        uses: actions/setup-node@v4
         run: npm install
 
       - name: 🏗️ Build Web (Vite / React)
