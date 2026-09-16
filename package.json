@@ -10,19 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
+
     "@capacitor/cli": "^8.5.2",
     "@capacitor/core": "^8.5.2",
-=======
->>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
+
     "@powersync/web": "^2.2.0",
     "@prisma/client": "^7.9.1",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/vite": "^4.3.3",
-<<<<<<< HEAD
+
     "dexie": "^4.4.6",
-=======
->>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
+
     "framer-motion": "^13.1.1",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.33.0",
