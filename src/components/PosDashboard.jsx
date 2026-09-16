@@ -202,6 +202,7 @@ export default function PosDashboard({ shopName, user, onLogout }) {
                       <Users size={18}/> Gestion Équipe
                     </button>
                   )}
+<<<<<<< HEAD
 {/* 
         Bouton Historique Stock masqué en attendant la mise à jour 
         {( !isVendor || user?.can_stock === true ) && (
@@ -214,6 +215,18 @@ export default function PosDashboard({ shopName, user, onLogout }) {
         )}
       */}
 
+=======
+
+                  {/* Bouton Historique Stock */}
+                  {(!isVendor || user?.can_stock === true) && (
+                    <button 
+                      onClick={() => { setActiveTab('historique'); setIsSidebarOpen(false); }}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer ${activeTab === 'historique' ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
+                    >
+                      <History size={18}/> Historique Stock
+                    </button>
+                  )}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                 </nav>
               </div>
 

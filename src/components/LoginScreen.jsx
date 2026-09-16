@@ -82,7 +82,11 @@ export default function LoginScreen({ shopName, onLoginSuccess, onOpenLicense, o
 
   return (
     <div className="h-screen w-screen bg-white md:bg-slate-100 flex items-center justify-center p-4 overflow-hidden">
+<<<<<<< HEAD
       <div className="w-full max-w-sm h-full max-h-[600px] bg-white md:rounded-2xl md:shadow-lg md:border md:border-slate-200 flex flex-col justify-between py-6 px-4">
+=======
+      <div className="w-full max-w-sm h-full max-h-[560px] bg-white md:rounded-2xl md:shadow-lg md:border md:border-slate-200 flex flex-col justify-between py-6 px-4">
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
         
         <div>
           <div className="flex items-center gap-3 mb-6">
@@ -155,6 +159,7 @@ export default function LoginScreen({ shopName, onLoginSuccess, onOpenLicense, o
           >
             Première utilisation ? Créer un compte boutique
           </button>
+<<<<<<< HEAD
 
           {/* Ajout du numéro WhatsApp du support */}
           <a 
@@ -165,6 +170,8 @@ export default function LoginScreen({ shopName, onLoginSuccess, onOpenLicense, o
           >
             💬 Obtenir sa licence sur WhatsApp : +243 989 546 920
           </a>
+=======
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
           
           <button 
             type="button"
@@ -178,4 +185,8 @@ export default function LoginScreen({ shopName, onLoginSuccess, onOpenLicense, o
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc

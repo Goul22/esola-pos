@@ -28,16 +28,27 @@ export async function syncOfflineSales() {
   }
 }
 
+<<<<<<< HEAD
 // 🚀 Déclenchement automatique et écouteur réseau sécurisé
 if (typeof window !== 'undefined') {
   // Attendre que le DOM et les modules soient complètement prêts pour éviter l'erreur d'initialisation de 'db'
   window.addEventListener('load', () => {
     syncOfflineSales();
   });
+=======
+// 🚀 Déclenchement automatique et écouteur réseau (sans toucher à App.jsx)
+if (typeof window !== 'undefined') {
+  // Tenter une synchro dès le chargement si on est en ligne
+  syncOfflineSales();
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
 
   // Écouter le retour de la connexion internet
   window.addEventListener('online', () => {
     console.log("🌐 Connexion rétablie : Lancement de la synchronisation...");
     syncOfflineSales();
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc

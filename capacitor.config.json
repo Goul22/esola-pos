@@ -1,5 +1,10 @@
 {
+<<<<<<< HEAD
   "appId": "com.esola.pos",
   "appName": "ESOLA",
+=======
+  "appId": "cd.esola.app",
+  "appName": "esola",
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   "webDir": "dist"
 }

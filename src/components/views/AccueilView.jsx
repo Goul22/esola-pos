@@ -39,6 +39,7 @@ export default function AccueilView() {
     year: 'numeric'
   }).format(new Date());
 
+<<<<<<< HEAD
  // Récupération de la devise active (ex: USD, CDF, EUR, etc.)
   const currentCurrency = localStorage.getItem('shop_currency') || 'CDF';
 
@@ -46,10 +47,14 @@ export default function AccueilView() {
     const numericAmount = Number(num || 0);
     return numericAmount.toLocaleString().replace(/[\s\u00A0\u202F]/g, ' ') + ` ${currentCurrency}`;
   };
+=======
+  const formatMoney = (num) => (num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
 
   const formatCompactMoney = (num) => {
     const val = num || 0;
     if (val >= 1_000_000) {
+<<<<<<< HEAD
       return (val / 1_000_000).toFixed(1).replace('.', ',') + `M ${currentCurrency}`;
     }
     if (val >= 1_000) {
@@ -57,6 +62,16 @@ export default function AccueilView() {
     }
     return formatMoney(val);
   };
+=======
+      return (val / 1_000_000).toFixed(1).replace('.', ',') + 'M';
+    }
+    if (val >= 1_000) {
+      return (val / 1_000).toFixed(0) + 'k';
+    }
+    return formatMoney(val);
+  };
+
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   useEffect(() => {
     fetchUserShops();
   }, []);
@@ -331,7 +346,11 @@ const handlePayDebt = async (debtId) => {
   const dynamicBreakdown = Object.keys(categoriesMap).map(cat => ({
     category: cat,
     count: `${categoriesMap[cat].count} articles`,
+<<<<<<< HEAD
     value: `${formatMoney(categoriesMap[cat].value)} `
+=======
+    value: `${formatMoney(categoriesMap[cat].value)} CDF`
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   }));
 
   return (
@@ -369,7 +388,14 @@ const handlePayDebt = async (debtId) => {
             {activeShop ? activeShop.shop_name : 'Chargement...'} ▼
           </button>
         </div>
+<<<<<<< HEAD
         
+=======
+        <div className="flex items-center gap-2 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="text-[10px] font-bold text-emerald-700">Mode Local / Cloud</span>
+        </div>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       </div>
 
       {showShopSelector && shops.length > 0 && (
@@ -406,7 +432,11 @@ const handlePayDebt = async (debtId) => {
           </div>
           <div>
             <div className="text-lg font-black text-slate-900">
+<<<<<<< HEAD
               {loading ? '...' : `${formatCompactMoney(totalStockValue)} `}
+=======
+              {loading ? '...' : `${formatCompactMoney(totalStockValue)} CDF`}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
             </div>
             <span className="text-[10px] text-blue-600 font-bold flex items-center gap-1 mt-1">
               Appuyer pour le détail <ArrowRight size={10}/>
@@ -423,7 +453,11 @@ const handlePayDebt = async (debtId) => {
           </div>
           <div>
             <div className="text-lg font-black text-emerald-600">
+<<<<<<< HEAD
               {loading ? '...' : `${formatCompactMoney(todaySales)} `}
+=======
+              {loading ? '...' : `${formatCompactMoney(todaySales)} CDF`}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
             </div>
             <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1 mt-1">
               Toutes boutiques <ArrowRight size={10}/>
@@ -453,7 +487,114 @@ const handlePayDebt = async (debtId) => {
       </div>
 
       {/* SECTION DÉTAILLÉE : Suivi des Crédits & Tranches en cours (Avec affichage des produits) */}
+<<<<<<< HEAD
      
+=======
+      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs space-y-3">
+        <div className="flex justify-between items-center mb-1">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-amber-50 text-amber-600 rounded-lg">
+              <Clock size={16} />
+            </div>
+            <h2 className="font-bold text-slate-800 text-sm">Suivi des Ventes par Tranches (Crédits)</h2>
+          </div>
+          <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+            {debtsList.length} en cours
+          </span>
+        </div>
+
+        <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
+          {debtsList.length === 0 ? (
+            <div className="text-center py-6 bg-slate-50 rounded-xl">
+              <p className="text-xs text-slate-400">Aucun crédit ou tranche en cours actuellement.</p>
+            </div>
+          ) : (
+            debtsList.map((debt) => {
+              const total = debt.total_amount || 0;
+              const paid = debt.amount_paid || (total * 0.4); 
+              const remaining = total - paid;
+              
+              // Récupération sécurisée des produits de la vente (items / products / cart)
+              let itemsList = [];
+              try {
+                if (typeof debt.items === 'string') {
+                  itemsList = JSON.parse(debt.items);
+                } else if (Array.isArray(debt.items)) {
+                  itemsList = debt.items;
+                } else if (Array.isArray(debt.products)) {
+                  itemsList = debt.products;
+                }
+              } catch (e) {
+                itemsList = [];
+              }
+
+              return (
+                <div key={debt.id} className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-2.5">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-bold text-slate-900 text-xs">{debt.client_name || 'Client comptant'}</p>
+                      <p className="text-[10px] text-slate-500">{debt.client_phone || '+243...'}</p>
+                    </div>
+                    <span className="text-[10px] bg-rose-50 text-rose-600 font-bold px-2 py-0.5 rounded-full">
+                      Échéance : {debt.due_date ? new Date(debt.due_date).toLocaleDateString() : '2026-09-05'}
+                    </span>
+                  </div>
+
+                  {/* LISTE DES PRODUITS CONCERNÉS */}
+                  <div className="bg-white p-2.5 rounded-xl border border-slate-100 space-y-1">
+                    <span className="text-[9px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                      <ShoppingCart size={10} /> Produits concernés :
+                    </span>
+                    {itemsList.length === 0 ? (
+                      <p className="text-[11px] text-slate-500 italic">Détails des articles non disponibles</p>
+                    ) : (
+                      <div className="space-y-1 pt-1">
+                        {itemsList.map((prod, idx) => (
+                          <div key={idx} className="flex justify-between text-xs text-slate-700 font-medium">
+                            <span>• {prod.name || prod.nom} <span className="text-[10px] text-slate-400">(x{prod.qty || prod.quantite || 1})</span></span>
+                            <span className="font-bold">{formatMoney((prod.price || prod.prix_vente || 0) * (prod.qty || prod.quantite || 1))} CDF</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 text-center pt-2 border-t border-slate-200/60 text-[11px]">
+                    <div>
+                      <span className="text-slate-400 block text-[9px] font-bold uppercase">TOTAL</span>
+                      <span className="font-black text-slate-700">{formatMoney(total)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px] font-bold uppercase">VERSÉ</span>
+                      <span className="font-black text-emerald-600">{formatMoney(paid)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[9px] font-bold uppercase">RESTE</span>
+                      <span className="font-black text-rose-600">{formatMoney(remaining)}</span>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => {
+                      setSelectedTrancheDetail({
+                        label: `Détails - ${debt.client_name || 'Client'}`,
+                        count: 1,
+                        total: total,
+                        items: [debt]
+                      });
+                      setIsTrancheModalOpen(true);
+                    }}
+                    className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                  >
+                    Encaissement / Gérer la tranche <ChevronRight size={14} />
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
 {/* Analyse par Tranche de Montant Global */}
       <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs space-y-3">
         <div className="flex justify-between items-center mb-1">
@@ -477,7 +618,11 @@ const handlePayDebt = async (debtId) => {
                 <p className="text-[10px] text-slate-400">{tranche.count} transaction(s)</p>
               </div>
               <div className="text-right">
+<<<<<<< HEAD
                 <span className="font-black text-slate-900 text-xs">{formatMoney(tranche.total)} </span>
+=======
+                <span className="font-black text-slate-900 text-xs">{formatMoney(tranche.total)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                 <span className="text-[10px] text-indigo-600 font-bold flex items-center gap-1 justify-end mt-0.5">
                   Détails <ArrowRight size={10} />
                 </span>
@@ -508,7 +653,11 @@ const handlePayDebt = async (debtId) => {
             >
               <div>
                 <div className="text-sm font-bold text-slate-800">{p.name || p.nom}</div>
+<<<<<<< HEAD
                 <div className="text-xs text-slate-500 font-semibold">{formatMoney(p.price || p.prix_vente || 0)} </div>
+=======
+                <div className="text-xs text-slate-500 font-semibold">{formatMoney(p.price || p.prix_vente || 0)} CDF</div>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
               </div>
               <div className="flex items-center gap-2">
                 <span className="bg-rose-100 text-rose-700 px-2 py-0.5 rounded-md text-[10px] font-bold">
@@ -530,7 +679,11 @@ const handlePayDebt = async (debtId) => {
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <div>
                 <h3 className="font-bold text-slate-800 text-base">{selectedTrancheDetail.label}</h3>
+<<<<<<< HEAD
                 <span className="text-xs text-slate-400">{selectedTrancheDetail.count} élément(s) - Total : {formatMoney(selectedTrancheDetail.total)} </span>
+=======
+                <span className="text-xs text-slate-400">{selectedTrancheDetail.count} élément(s) - Total : {formatMoney(selectedTrancheDetail.total)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
               </div>
               <button 
                 onClick={() => setIsTrancheModalOpen(false)} 
@@ -559,7 +712,11 @@ const handlePayDebt = async (debtId) => {
                             {item.created_at ? new Date(item.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                           </p>
                         </div>
+<<<<<<< HEAD
                         <span className="font-black text-emerald-600 text-xs">{formatMoney(item.total_amount)} </span>
+=======
+                        <span className="font-black text-emerald-600 text-xs">{formatMoney(item.total_amount)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                       </div>
                       {subItems.length > 0 && (
                         <div className="text-[11px] text-slate-600 pl-2 border-l-2 border-indigo-200">
@@ -612,7 +769,11 @@ const handlePayDebt = async (debtId) => {
                         <p className="font-bold text-slate-900 text-sm">{debt.client_name || 'Client inconnu'}</p>
                         {debt.client_phone && <p className="text-[11px] text-slate-500">{debt.client_phone}</p>}
                       </div>
+<<<<<<< HEAD
                       <span className="font-black text-rose-600 text-sm">{formatMoney(debt.total_amount)} </span>
+=======
+                      <span className="font-black text-rose-600 text-sm">{formatMoney(debt.total_amount)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                     </div>
 
                     {itemsList.length > 0 && (
@@ -660,7 +821,11 @@ const handlePayDebt = async (debtId) => {
 
             <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100 text-center">
               <span className="text-[10px] font-bold text-emerald-600 uppercase">Total Global Aujourd'hui</span>
+<<<<<<< HEAD
               <p className="text-xl font-black text-emerald-700">{formatMoney(globalSalesTotal)} </p>
+=======
+              <p className="text-xl font-black text-emerald-700">{formatMoney(globalSalesTotal)} CDF</p>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
             </div>
 
             <div className="space-y-2.5 max-h-48 overflow-y-auto">
@@ -670,7 +835,11 @@ const handlePayDebt = async (debtId) => {
                     <p className="font-bold text-slate-800 text-xs">{shopSale.shopName}</p>
                     <p className="text-[10px] text-slate-400">{shopSale.count} vente(s) enregistrée(s)</p>
                   </div>
+<<<<<<< HEAD
                   <span className="font-black text-slate-900 text-xs">{formatMoney(shopSale.total)} </span>
+=======
+                  <span className="font-black text-slate-900 text-xs">{formatMoney(shopSale.total)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                 </div>
               ))}
             </div>
@@ -701,7 +870,11 @@ const handlePayDebt = async (debtId) => {
 
             <div className="p-3 bg-blue-50 rounded-2xl border border-blue-100 text-center">
               <span className="text-[10px] font-bold text-blue-600 uppercase">Valeur Totale du Stock</span>
+<<<<<<< HEAD
               <p className="text-xl font-black text-blue-700">{formatMoney(totalStockValue)} </p>
+=======
+              <p className="text-xl font-black text-blue-700">{formatMoney(totalStockValue)} CDF</p>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
             </div>
 
             <div className="space-y-2 max-h-48 overflow-y-auto">

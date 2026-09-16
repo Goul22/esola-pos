@@ -43,6 +43,7 @@ export default function StockView() {
   // Recherche de produit
   const [searchTerm, setSearchTerm] = useState('');
 
+<<<<<<< HEAD
   // ----------------------------------------------------
   // GESTION DE LA DEVISE (AJOUTÉ)
   // ----------------------------------------------------
@@ -71,6 +72,8 @@ export default function StockView() {
   };
   // ----------------------------------------------------
 
+=======
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   // 1. Charger les boutiques de l'utilisateur au montage
   useEffect(() => {
     fetchUserShops();
@@ -369,11 +372,19 @@ export default function StockView() {
             </div>
             <div className="flex justify-between items-end">
               <div>
+<<<<<<< HEAD
                 <h3 className="text-xl font-extrabold">{formatMoney(totalPotentialProfit)}</h3>
               </div>
               <div className="text-right">
                 <span className="block text-[10px] text-slate-400">Valeur stock vente</span>
                 <span className="text-xs font-bold">{formatMoney(totalStockValue)}</span>
+=======
+                <h3 className="text-xl font-extrabold">{totalPotentialProfit.toLocaleString()} CDF</h3>
+              </div>
+              <div className="text-right">
+                <span className="block text-[10px] text-slate-400">Valeur stock vente</span>
+                <span className="text-xs font-bold">{totalStockValue.toLocaleString()} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
               </div>
             </div>
           </div>
@@ -421,8 +432,13 @@ export default function StockView() {
                 </div>
               </div>
               <div className="text-right">
+<<<<<<< HEAD
                 <span className="block text-sm font-extrabold text-slate-900">{formatMoney(p.price)}</span>
                 <span className="text-[10px] text-emerald-600 font-medium">Achat : {formatMoney(p.buy_price || 0)}</span>
+=======
+                <span className="block text-sm font-extrabold text-slate-900">{p.price.toLocaleString()} CDF</span>
+                <span className="text-[10px] text-emerald-600 font-medium">Achat : {p.buy_price || 0}</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
               </div>
             </div>
           ))

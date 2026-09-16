@@ -31,6 +31,7 @@ export default function TeamView() {
     try {
       const currentLicense = localStorage.getItem('esola_active_license') || JSON.parse(localStorage.getItem('user_data') || '{}').license_key || '';
       
+<<<<<<< HEAD
       // 1. Charger les boutiques de manière robuste (par licence ou par user_id/email)
       let shopsData = [];
       if (navigator.onLine) {
@@ -55,16 +56,32 @@ export default function TeamView() {
         shopsData = await db.shops.toArray();
       }
 
+=======
+      // Charger les boutiques pour l'assignation
+      let shopsData = [];
+      if (navigator.onLine && currentLicense) {
+        const { data: sData } = await supabase.from('shops').select('*').eq('license_key', currentLicense);
+        if (sData) shopsData = sData;
+      }
+      if (shopsData.length === 0 && db.shops) {
+        shopsData = await db.shops.toArray();
+      }
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       setShops(shopsData);
       if (shopsData.length > 0 && !assignedShop) {
         setAssignedShop(shopsData[0].shop_name);
       }
 
+<<<<<<< HEAD
       // 2. Charger les membres de l'équipe
+=======
+      // Charger les membres de l'équipe
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       let membersData = [];
       if (db.team_members) {
         membersData = await db.team_members.toArray();
       }
+<<<<<<< HEAD
 
       if (navigator.onLine) {
         try {
@@ -85,6 +102,15 @@ export default function TeamView() {
         }
       }
 
+=======
+      if (navigator.onLine && currentLicense) {
+        const { data: mData, error } = await supabase.from('team_members').select('*').eq('license_key', currentLicense);
+        if (!error && mData) {
+          membersData = mData;
+          if (db.team_members) await db.team_members.bulkPut(mData);
+        }
+      }
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       setTeamMembers(membersData);
     } catch (err) {
       console.error("Erreur chargement équipe:", err);
@@ -102,6 +128,10 @@ export default function TeamView() {
 
     const currentLicense = localStorage.getItem('esola_active_license') || JSON.parse(localStorage.getItem('user_data') || '{}').license_key || 'DEFAULT-LICENSE';
 
+<<<<<<< HEAD
+=======
+    // Utilisation d'un identifiant unique textuel pour éviter les doublons de clés primaires
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
     const memberData = {
       id: String(Date.now()),
       name: newName.trim(),
@@ -118,9 +148,13 @@ export default function TeamView() {
     try {
       if (navigator.onLine) {
         const { error } = await supabase.from('team_members').insert([memberData]);
+<<<<<<< HEAD
         if (error) {
           console.warn("Avertissement Supabase (insertion membre) :", error);
         }
+=======
+        if (error) throw error;
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       }
 
       if (db.team_members) {
@@ -128,7 +162,11 @@ export default function TeamView() {
       }
 
       toast.success("Membre ajouté avec succès !");
+<<<<<<< HEAD
       setTeamMembers(prev => [...prev, memberData]);
+=======
+      setTeamMembers([...teamMembers, memberData]);
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       setShowAddModal(false);
 
       // Réinitialiser le formulaire
@@ -138,7 +176,11 @@ export default function TeamView() {
       setNewRole('Vendeur');
       if (shops.length > 0) setAssignedShop(shops[0].shop_name);
     } catch (err) {
+<<<<<<< HEAD
       console.error("Détail exact de l'erreur d'ajout:", err);
+=======
+      console.error("Détail exact de l'erreur Supabase:", err);
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       toast.error("Erreur : " + (err.message || err.details || "Impossible d'enregistrer le membre"));
     }
   };
@@ -151,6 +193,7 @@ export default function TeamView() {
       if (db.team_members) {
         await db.team_members.delete(memberId);
       }
+<<<<<<< HEAD
       setTeamMembers(prev => prev.filter(m => m.id !== memberId));
       toast.success("Membre supprimé avec succès.");
     } catch (err) {
@@ -160,6 +203,13 @@ export default function TeamView() {
       }
       setTeamMembers(prev => prev.filter(m => m.id !== memberId));
       toast.success("Membre supprimé localement.");
+=======
+      setTeamMembers(teamMembers.filter(m => m.id !== memberId));
+      toast.success("Membre supprimé avec succès.");
+    } catch (err) {
+      console.error("Erreur suppression:", err);
+      toast.error("Erreur lors de la suppression.");
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
     }
   };
 
@@ -194,7 +244,10 @@ export default function TeamView() {
           <UserPlus size={14} /> Ajouter
         </button>
       </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
       {/* Liste des membres */}
       <div className="space-y-2">
         <span className="text-[10px] font-bold text-slate-400 uppercase px-1">Membres enregistrés ({teamMembers.length})</span>
@@ -295,7 +348,11 @@ export default function TeamView() {
                   className="w-full bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-indigo-500"
                 >
                   <option value="Vendeur">Vendeur</option>
+<<<<<<< HEAD
                   
+=======
+                  <option value="Super Admin">Super Admin (Accès global)</option>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                 </select>
               </div>
 
@@ -307,6 +364,7 @@ export default function TeamView() {
                     onChange={e => setAssignedShop(e.target.value)}
                     className="w-full bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-indigo-500"
                   >
+<<<<<<< HEAD
                     {shops.length === 0 ? (
                       <option value="">Aucune boutique disponible</option>
                     ) : (
@@ -314,6 +372,11 @@ export default function TeamView() {
                         <option key={s.id || s.shop_name} value={s.shop_name}>{s.shop_name}</option>
                       ))
                     )}
+=======
+                    {shops.map(s => (
+                      <option key={s.id || s.shop_name} value={s.shop_name}>{s.shop_name}</option>
+                    ))}
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                   </select>
                   <p className="text-[9px] text-amber-600 mt-1">Le vendeur ne verra que les données de cette boutique.</p>
                 </div>

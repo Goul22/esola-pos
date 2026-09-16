@@ -4,6 +4,7 @@ import { supabase } from '../../supabase';
 import { jsPDF } from 'jspdf';
 import toast, { Toaster } from 'react-hot-toast';
 
+<<<<<<< HEAD
 
 
 export default function RapportView() {
@@ -38,12 +39,24 @@ const formatMoney = (amount) => {
 
   return `${formattedNumber} ${symbol}`;
 };
+=======
+const formatMoney = (num) => {
+  if (num === null || num === undefined || isNaN(num)) return '0';
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+};
+
+export default function RapportView() {
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReport, setSelectedReport] = useState(null);
 
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   const [filterType, setFilterType] = useState('all'); // 'all', 'comptant', ou 'tranche'
+=======
+  
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
   const [shops, setShops] = useState([]);
   const [activeShop, setActiveShop] = useState(null);
 
@@ -220,7 +233,11 @@ const formatMoney = (amount) => {
           seller: sale.seller_name || sale.vendeur || 'Vendeur',
           clientName: sale.client_name || sale.client || 'Client comptoir',
           paymentType: sale.payment_type || 'cash',
+<<<<<<< HEAD
           total: `${formatMoney(totalNum)} `,
+=======
+          total: `${formatMoney(totalNum)} CDF`,
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
           totalNum: totalNum,
           amountPaid: amountPaid,
           remainingDue: remainingDue,
@@ -439,6 +456,7 @@ const handleRequestCancelSale = (report) => {
     });
   };
 
+<<<<<<< HEAD
 const exportInvoicePDF = (report) => {
     const doc = new jsPDF({ unit: 'mm', format: [80, 160] }); // Légèrement allongé pour inclure les tranches si besoin
     
@@ -547,6 +565,46 @@ y += 6;
 
   return matchesSearch;
 });
+=======
+  const exportInvoicePDF = (report) => {
+    const doc = new jsPDF({ unit: 'mm', format: [80, 150] });
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(12);
+    doc.text(activeShop?.shop_name || "ESOLA SHOP", 40, 10, { align: "center" });
+    
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8);
+    doc.text(`Date: ${report.date} à ${report.time}`, 5, 18);
+    doc.text(`Vendeur: ${report.seller}`, 5, 22);
+    doc.text(`Client: ${report.clientName}`, 5, 26);
+    doc.text("------------------------------------------------", 5, 30);
+
+    let y = 35;
+    report.items.forEach((item) => {
+      const name = item.name || item.product_name || 'Article';
+      const qty = item.qty || item.quantite || item.quantity || 1;
+      const price = item.price || item.prix || 0;
+      doc.text(`${name} (x${qty})`, 5, y);
+      doc.text(`${formatMoney(price * qty)}`, 75, y, { align: "right" });
+      y += 6;
+    });
+
+    doc.text("------------------------------------------------", 5, y);
+    y += 5;
+    doc.setFont("Helvetica", "bold");
+    doc.text(`TOTAL: ${report.total}`, 5, y);
+
+    doc.save(`recu_${report.id}.pdf`);
+  };
+
+  const filteredReports = reports.filter(r => {
+    const matchesSearch = searchQuery === '' || 
+      r.seller.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      r.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.items.some(i => (i.name || i.product_name || '').toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesSearch;
+  });
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
 
   const totalRevenue = reports.reduce((acc, curr) => acc + curr.totalNum, 0);
 
@@ -609,11 +667,16 @@ y += 6;
 
           <div className="bg-slate-50 px-4 py-2.5 rounded-2xl border border-slate-200 text-right">
             <span className="text-[10px] font-bold text-slate-400 block uppercase">Chiffre d'affaires</span>
+<<<<<<< HEAD
             <span className="text-sm font-black text-emerald-600">{formatMoney(totalRevenue)} </span>
+=======
+            <span className="text-sm font-black text-emerald-600">{formatMoney(totalRevenue)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* Barre de recherche & Filtres */}
 <div className="flex flex-col gap-3">
   <div className="relative flex-1">
@@ -661,6 +724,21 @@ y += 6;
     </button>
   </div>
 </div>
+=======
+      {/* Barre de recherche */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Rechercher par client, vendeur ou produit..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white pl-10 pr-4 py-3 rounded-2xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-indigo-500 shadow-xs"
+          />
+        </div>
+      </div>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
 
       {/* LISTE DES VENTES EN CARTES (MOBILE-FRIENDLY SANS SCROLL HORIZONTAL) */}
       <div className="space-y-3">
@@ -769,6 +847,7 @@ y += 6;
                   const qty = Number(item.qty || item.quantite || item.quantity || 1);
                   const price = Number(item.price || item.prix || 0);
                   const lineTotal = qty * price;
+<<<<<<< HEAD
                   return (
                     <div key={idx} className="bg-white border border-slate-200 p-3 rounded-2xl flex items-center justify-between">
                       <div className="overflow-hidden pr-2">
@@ -776,6 +855,15 @@ y += 6;
                         <p className="text-[10px] text-slate-500">Qté : {qty} × {formatMoney(price)}</p>
                       </div>
                       <span className="text-xs font-black text-slate-900 shrink-0">{formatMoney(lineTotal)}</span>
+=======
+return (
+                    <div key={idx} className="bg-white border border-slate-200 p-3 rounded-2xl flex items-center justify-between">
+                      <div className="overflow-hidden pr-2">
+                        <p className="text-xs font-bold text-slate-900 truncate">{item.name || item.product_name || 'Article'}</p>
+                        <p className="text-[10px] text-slate-500">Qté : {qty} × {formatMoney(price)} CDF</p>
+                      </div>
+                      <span className="text-xs font-black text-slate-900 shrink-0">{formatMoney(lineTotal)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                     </div>
                   );
                 })}
@@ -793,11 +881,19 @@ y += 6;
                 <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl space-y-2 text-amber-900">
                   <div className="flex justify-between">
                     <span>Total payé à ce jour :</span>
+<<<<<<< HEAD
                     <span className="font-bold">{formatMoney(selectedReport.amountPaid)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Reste dû :</span>
                     <span className="font-black text-rose-600">{formatMoney(selectedReport.remainingDue)}</span>
+=======
+                    <span className="font-bold">{formatMoney(selectedReport.amountPaid)} CDF</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Reste dû :</span>
+                    <span className="font-black text-rose-600">{formatMoney(selectedReport.remainingDue)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                   </div>
 
                   {/* Historique des tranches versées */}
@@ -807,7 +903,11 @@ y += 6;
                       {selectedReport.tranches.map((t, tIdx) => (
                         <div key={tIdx} className="flex justify-between text-[11px] text-amber-800">
                           <span>{new Date(t.date).toLocaleDateString()} ({t.seller})</span>
+<<<<<<< HEAD
                           <span className="font-bold">+{formatMoney(t.amount)}</span>
+=======
+                          <span className="font-bold">+{formatMoney(t.amount)} CDF</span>
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
                         </div>
                       ))}
                     </div>
@@ -826,6 +926,10 @@ y += 6;
                 </div>
               )}
             </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a4af81b1e5cdb5f0a271ca95578f269c3ac545dc
             {/* Actions (PDF & Annulation) */}
             <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
               <button
